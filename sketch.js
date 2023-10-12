@@ -14,6 +14,7 @@ class Square {
         this.x += this.xVel;
         this.y += this.yVel;
         this.theta += this.omega;
+        this.avoidance();
     }
 
     display() {
@@ -36,6 +37,26 @@ class Square {
     wrapOnEdge() {
         //to be implemented
     }
+
+    avoidance() {
+        const AVOIDANCE_DIST = 30;
+
+        if (this.x - mouseX > 0 && this.x - mouseX < AVOIDANCE_DIST) {
+            this.xVel += 1;
+        }
+
+        if (this.x - mouseX < 0 && this.x - mouseX > -AVOIDANCE_DIST) {
+            this.xVel -= 1;
+        }
+
+        if (this.y - mouseY > 0 && this.y - mouseY < AVOIDANCE_DIST) {
+            this.yVel += 1;
+        }
+
+        if (this.y - mouseY < 0 && this.y - mouseY > -AVOIDANCE_DIST) {
+            this.yVel -= 1;
+        }
+    }
 }
 
 const squareList = [];
@@ -44,7 +65,7 @@ setup = () => {
     createCanvas(windowWidth, windowHeight);
     noStroke();
     
-    for (let i = 0; i < 100; i++) squareList.push(new Square(random(0, width), random(0, height)));
+    for (let i = 0; i < 200; i++) squareList.push(new Square(random(0, width), random(0, height)));
 }
 
 draw = () => {
