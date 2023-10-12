@@ -43,9 +43,12 @@ class Square {
         const NEUTRAL_MAX_VEL = 1;
         const AVOIDANCE_DIST = 150;
         const NEUTRAL_DAMPENER = 0.5;
+
+        const DEFAULT_BLUE = color(50, 120, 255, 120);
+        const SCARED_RED = color(255, 0, 0, 120);
         
         if (dist(this.x, this.y, mouseX, mouseY) < AVOIDANCE_DIST) {
-            this.c = color(255, 0, 0, 120);
+            this.c = lerpColor(DEFAULT_BLUE, SCARED_RED, (AVOIDANCE_DIST - dist(this.x, this.y, mouseX, mouseY)) / AVOIDANCE_DIST);
             /*
             this.x += (200 - (this.x - mouseX)) / 100 * (mouseX > this.x ? -1 : 1);
             this.y += (200 - (this.y - mouseY)) / 100 * (mouseY > this.y ? -1 : 1);
@@ -54,7 +57,7 @@ class Square {
             this.xVel += (AVOIDANCE_DIST - (this.x - mouseX)) / 250 * (mouseX > this.x ? -1 : 1);
             this.yVel += (AVOIDANCE_DIST - (this.y - mouseY)) / 250 * (mouseY > this.y ? -1 : 1);
         } else {
-            this.c = color(50, 120, 255, 120);
+            this.c = DEFAULT_BLUE;
             if (this.xVel > NEUTRAL_MAX_VEL) this.xVel -= NEUTRAL_DAMPENER;
             if (this.yVel > NEUTRAL_MAX_VEL) this.yVel -= NEUTRAL_DAMPENER;
             if (this.xVel < -NEUTRAL_MAX_VEL) this.xVel += NEUTRAL_DAMPENER;
