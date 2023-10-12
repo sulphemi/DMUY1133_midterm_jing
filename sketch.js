@@ -11,7 +11,7 @@ class Square {
     }
 
     tick() {
-        //this.bounceOnEdge();
+        this.bounceOnEdge();
         this.x += this.xVel;
         this.y += this.yVel;
         this.theta += this.omega;
@@ -40,18 +40,29 @@ class Square {
     }
 
     avoidance() {
-        const AVOIDANCE_DIST = 200;
+        const NEUTRAL_MAX_VEL = 1;
+        const AVOIDANCE_DIST = 150;
+        const NEUTRAL_DAMPENER = 0.5;
         
         if (dist(this.x, this.y, mouseX, mouseY) < AVOIDANCE_DIST) {
             this.c = color(255, 0, 0, 120);
+            /*
             this.x += (200 - (this.x - mouseX)) / 100 * (mouseX > this.x ? -1 : 1);
             this.y += (200 - (this.y - mouseY)) / 100 * (mouseY > this.y ? -1 : 1);
+            */
+
+            this.xVel += (AVOIDANCE_DIST - (this.x - mouseX)) / 250 * (mouseX > this.x ? -1 : 1);
+            this.yVel += (AVOIDANCE_DIST - (this.y - mouseY)) / 250 * (mouseY > this.y ? -1 : 1);
         } else {
             this.c = color(50, 120, 255, 120);
+            if (this.xVel > NEUTRAL_MAX_VEL) this.xVel -= NEUTRAL_DAMPENER;
+            if (this.yVel > NEUTRAL_MAX_VEL) this.yVel -= NEUTRAL_DAMPENER;
+            if (this.xVel < -NEUTRAL_MAX_VEL) this.xVel += NEUTRAL_DAMPENER;
+            if (this.yVel < -NEUTRAL_MAX_VEL) this.yVel += NEUTRAL_DAMPENER;
         }
 
         /*
-        const NEUTRAL_MAX_VEL = 1;
+
 
         if (dist(this.x, mouseX, this.y, mouseY) < AVOIDANCE_DIST) {
             this.xVel = 
@@ -72,7 +83,7 @@ setup = () => {
     createCanvas(windowWidth, windowHeight);
     noStroke();
     
-    for (let i = 0; i < 1; i++) squareList.push(new Square(random(0, width), random(0, height)));
+    for (let i = 0; i < 100; i++) squareList.push(new Square(random(0, width), random(0, height)));
 }
 
 draw = () => {
