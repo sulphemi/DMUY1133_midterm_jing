@@ -7,10 +7,11 @@ class Square {
         this.theta = random(0, TWO_PI);
         this.omega = random(-0.05, 0.05);
         this.w = 25;
+        this.c = color(50, 120, 255, 120);
     }
 
     tick() {
-        this.bounceOnEdge();
+        //this.bounceOnEdge();
         this.x += this.xVel;
         this.y += this.yVel;
         this.theta += this.omega;
@@ -18,7 +19,7 @@ class Square {
     }
 
     display() {
-        fill(50, 120, 255, 120);
+        fill(this.c);
         push();
 
         translate(this.x, this.y);
@@ -39,23 +40,29 @@ class Square {
     }
 
     avoidance() {
-        const AVOIDANCE_DIST = 30;
-
-        if (this.x - mouseX > 0 && this.x - mouseX < AVOIDANCE_DIST) {
-            this.xVel += 1;
+        const AVOIDANCE_DIST = 200;
+        
+        if (dist(this.x, this.y, mouseX, mouseY) < AVOIDANCE_DIST) {
+            this.c = color(255, 0, 0, 120);
+            this.x += (200 - (this.x - mouseX)) / 100 * (mouseX > this.x ? -1 : 1);
+            this.y += (200 - (this.y - mouseY)) / 100 * (mouseY > this.y ? -1 : 1);
+        } else {
+            this.c = color(50, 120, 255, 120);
         }
 
-        if (this.x - mouseX < 0 && this.x - mouseX > -AVOIDANCE_DIST) {
-            this.xVel -= 1;
-        }
+        /*
+        const NEUTRAL_MAX_VEL = 1;
 
-        if (this.y - mouseY > 0 && this.y - mouseY < AVOIDANCE_DIST) {
-            this.yVel += 1;
+        if (dist(this.x, mouseX, this.y, mouseY) < AVOIDANCE_DIST) {
+            this.xVel = 
+            this.yVel = 
+        } else {
+            if (this.xVel > NEUTRAL_MAX_VEL) this.xVel -= 0.1;
+            if (this.yVel > NEUTRAL_MAX_VEL) this.yVel -= 0.1;
+            if (this.xVel < -NEUTRAL_MAX_VEL) this.xVel += 0.1;
+            if (this.yVel < -NEUTRAL_MAX_VEL) this.yVel += 0.1;
         }
-
-        if (this.y - mouseY < 0 && this.y - mouseY > -AVOIDANCE_DIST) {
-            this.yVel -= 1;
-        }
+        */
     }
 }
 
@@ -65,7 +72,7 @@ setup = () => {
     createCanvas(windowWidth, windowHeight);
     noStroke();
     
-    for (let i = 0; i < 200; i++) squareList.push(new Square(random(0, width), random(0, height)));
+    for (let i = 0; i < 1; i++) squareList.push(new Square(random(0, width), random(0, height)));
 }
 
 draw = () => {
