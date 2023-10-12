@@ -1,11 +1,11 @@
 class Square {
-    constructor() {
-        this.x = 100;
-        this.y = 100;
-        this.xVel = 1;
-        this.yVel = 1;
-        this.theta = 0;
-        this.omega = 0.05;
+    constructor(x, y) {
+        this.x = x;
+        this.y = y;
+        this.xVel = random(-1, 1);
+        this.yVel = random(-1, 1);
+        this.theta = random(0, TWO_PI);
+        this.omega = random(-0.05, 0.05);
         this.w = 25;
     }
 
@@ -16,7 +16,7 @@ class Square {
     }
 
     display() {
-        fill(50, 120, 255);
+        fill(50, 120, 255, 120);
         push();
 
         translate(this.x, this.y);
@@ -32,7 +32,9 @@ const squareList = [];
 setup = () => {
     rectMode(RADIUS);
     createCanvas(windowWidth, windowHeight);
-    squareList.push(new Square());
+    noStroke();
+    
+    for (let i = 0; i < 100; i++) squareList.push(new Square(random(0, width), random(0, height)));
 }
 
 draw = () => {
