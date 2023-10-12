@@ -10,6 +10,7 @@ class Square {
     }
 
     tick() {
+        this.bounceOnEdge();
         this.x += this.xVel;
         this.y += this.yVel;
         this.theta += this.omega;
@@ -25,6 +26,15 @@ class Square {
         square(0, 0, this.w);
 
         pop();
+    }
+
+    bounceOnEdge() {
+        if (this.x < 0 || this.x > width) this.xVel = -this.xVel
+        if (this.y < 0 || this.y > height) this.yVel = -this.yVel;
+    }
+
+    wrapOnEdge() {
+        //to be implemented
     }
 }
 
