@@ -22,7 +22,7 @@ function draw() {
         for (const light of lightSources) {
             //graded white circle at each light source
             for (let i = 0; i < light.str; i++) {
-                fog.stroke(255 - i);
+                fog.stroke(255, 255 - i);
                 fog.circle(light.x, light.y, i);
             }
         }
