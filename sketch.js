@@ -10,6 +10,9 @@ function setup() {
 }
 
 function draw() {
+    if (lightSources.length > 1) lightSources.pop();
+    lightSources.push({x: mouseX, y: mouseY, str: 400});
+
     blendMode(BLEND);
     background(255);
 
