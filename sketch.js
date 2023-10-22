@@ -1,8 +1,6 @@
 let fog;
 let lightSources = [];
 
-const GRADIENT_STEP = 6;
-
 function setup() {
     createCanvas(800, 800);
     fog = createGraphics(width, height);
@@ -19,12 +17,14 @@ function draw() {
     blendMode(BLEND);
     background(255);
 
-
+    fog.blendMode(BLEND);
     fog.background(0); //set to black
+    fog.blendMode(LIGHTEST);
     for (const light of lightSources) {
         //graded white circle at each light source
-        for (let i = 0; i < light.str; i += GRADIENT_STEP) {
-            fog.fill(255, 255 - i);
+        let step = 5;
+        for (let i = light.str; i >= 0; i -= step) {
+            fog.fill(255 - i);
             fog.circle(light.x, light.y, i);
         }
     }
