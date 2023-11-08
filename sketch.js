@@ -31,8 +31,10 @@ class Square {
     }
 
     bounceOnEdge() {
-        if (this.x < 0 || this.x > width) this.xVel = -this.xVel
-        if (this.y < 0 || this.y > height) this.yVel = -this.yVel;
+        const DEMILITARIZED_ZONE = 100; //the amount offscreen that squares may go before being confined
+
+        if (this.x < -DEMILITARIZED_ZONE || this.x > width + DEMILITARIZED_ZONE) this.xVel = -this.xVel;
+        if (this.y < -DEMILITARIZED_ZONE || this.y > height + DEMILITARIZED_ZONE) this.yVel = -this.yVel;
     }
 
     avoidance() {
