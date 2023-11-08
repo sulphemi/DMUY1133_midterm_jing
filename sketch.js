@@ -61,6 +61,7 @@ class Square {
     }
 }
 
+let cursorSquare;
 const squareList = [];
 setup = () => {
     rectMode(RADIUS);
@@ -68,6 +69,7 @@ setup = () => {
     noStroke();
     
     for (let i = 0; i < 100; i++) squareList.push(new Square(random(0, width), random(0, height)));
+    cursorSquare = new Square(width / 2, height / 2);
 }
 
 draw = () => {
@@ -76,6 +78,12 @@ draw = () => {
         sq.tick();
         sq.display();
     }
+
+    cursorSquare.c = AVOIDANCE_DIST > 150 ? color(50, 120, 255, 120) : color(50, 120, 255, map(AVOIDANCE_DIST, 0, 150, 0, 120));
+    cursorSquare.x = mouseX;
+    cursorSquare.y = mouseY;
+    cursorSquare.theta += cursorSquare.omega;
+    cursorSquare.display();
 }
 
 //mouse wheel increases/decreases radius of effect
