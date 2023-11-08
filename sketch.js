@@ -83,7 +83,8 @@ setup = () => {
     createCanvas(windowWidth, windowHeight);
     noStroke();
     
-    for (let i = 0; i < 100; i++) squareList.push(new Square(random(0, width), random(0, height)));
+    const squareCount = width / 5;
+    for (let i = 0; i < squareCount; i++) squareList.push(new Square(random(0, width), random(0, height)));
     cursorSquare = new Square(width / 2, height / 2);
 }
 
