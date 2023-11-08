@@ -33,7 +33,7 @@ class Square {
     }
 
     bounceOnEdge() {
-        const DEMILITARIZED_ZONE = 100; //the amount offscreen that squares may go before being confined
+        let DEMILITARIZED_ZONE = AVOIDANCE_DIST + 50; //the amount offscreen that squares may go before being confined
 
         if (this.x < -DEMILITARIZED_ZONE || this.x > width + DEMILITARIZED_ZONE) this.xVel = -this.xVel;
         if (this.y < -DEMILITARIZED_ZONE || this.y > height + DEMILITARIZED_ZONE) this.yVel = -this.yVel;
