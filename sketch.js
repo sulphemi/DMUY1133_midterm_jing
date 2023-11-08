@@ -1,3 +1,5 @@
+let AVOIDANCE_DIST = 150;
+
 class Square {
     constructor(x, y) {
         this.x = x;
@@ -39,7 +41,6 @@ class Square {
 
     avoidance() {
         const NEUTRAL_MAX_VEL = 1;
-        const AVOIDANCE_DIST = 150;
         const NEUTRAL_DAMPENER = 0.5;
 
         const DEFAULT_BLUE = color(50, 120, 255, 120);
@@ -74,5 +75,24 @@ draw = () => {
     for (const sq of squareList) {
         sq.tick();
         sq.display();
+    }
+}
+
+//mouse wheel increases/decreases radius of effect
+mouseWheel = event => {
+    AVOIDANCE_DIST += event.delta;
+}
+
+//same with up/down keys
+keyPressed = () => {
+    switch (key) {
+        case "ArrowUp":
+            AVOIDANCE_DIST += 10;
+            break;
+        case "ArrowDown":
+            AVOIDANCE_DIST -= 10;
+            break;
+        default:
+            break;
     }
 }
