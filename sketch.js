@@ -1,27 +1,38 @@
 let fog;
 let lightSources = [];
 
-const GRADIENT_STEP = 5;
+const GRADIENT_STEP = 7;
 
 function setup() {
     createCanvas(800, 800);
     fog = createGraphics(width, height);
     lightSources.push({x: 400, y: 400, str: 200});
 
-    img = loadImage("https://localhost");
+    noCursor();
+    img = loadImage("./witch.jpg");
 }
 
 function draw() {
     if (lightSources.length > 1) lightSources.pop();
     lightSources.push({x: mouseX, y: mouseY, str: 150});
 
-    blendMode(BLEND);
     background(255);
     image(img, -100, -100);
 
-    //fog.blendMode(BLEND);
+    //circle to represent cursor
+    fill("#4080ff");
+    noStroke();
+    circle(mouseX, mouseY, 10);
+
+    //resource-intensive so we only update every few frames
+    if (frameCount % 3 === 0) prepFogLayer();
+    drawFogLayer();
+
+    console.log(frameRate());
+}
+
+function prepFogLayer() {
     fog.background(0); //set to black
-    //fog.blendMode(SCREEN);
 
     for (const light of lightSources) {
         //graded white circle at each light source
@@ -39,8 +50,10 @@ function draw() {
             fog.circle(light.x, light.y, light.str + i);
         }
     }
+}
 
+function drawFogLayer() {
     blendMode(MULTIPLY);
     image(fog, 0, 0);
-    console.log(frameRate());
+    blendMode(BLEND); //reset blend mode
 }
