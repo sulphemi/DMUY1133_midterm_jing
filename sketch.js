@@ -35,10 +35,6 @@ class Square {
         if (this.y < 0 || this.y > height) this.yVel = -this.yVel;
     }
 
-    wrapOnEdge() {
-        //to be implemented
-    }
-
     avoidance() {
         const NEUTRAL_MAX_VEL = 1;
         const AVOIDANCE_DIST = 150;
@@ -49,10 +45,6 @@ class Square {
         
         if (dist(this.x, this.y, mouseX, mouseY) < AVOIDANCE_DIST) {
             this.c = lerpColor(DEFAULT_BLUE, SCARED_RED, (AVOIDANCE_DIST - dist(this.x, this.y, mouseX, mouseY)) / AVOIDANCE_DIST);
-            /*
-            this.x += (200 - (this.x - mouseX)) / 100 * (mouseX > this.x ? -1 : 1);
-            this.y += (200 - (this.y - mouseY)) / 100 * (mouseY > this.y ? -1 : 1);
-            */
 
             this.xVel += (AVOIDANCE_DIST - (this.x - mouseX)) / 250 * (mouseX > this.x ? -1 : 1);
             this.yVel += (AVOIDANCE_DIST - (this.y - mouseY)) / 250 * (mouseY > this.y ? -1 : 1);
@@ -63,20 +55,6 @@ class Square {
             if (this.xVel < -NEUTRAL_MAX_VEL) this.xVel += NEUTRAL_DAMPENER;
             if (this.yVel < -NEUTRAL_MAX_VEL) this.yVel += NEUTRAL_DAMPENER;
         }
-
-        /*
-
-
-        if (dist(this.x, mouseX, this.y, mouseY) < AVOIDANCE_DIST) {
-            this.xVel = 
-            this.yVel = 
-        } else {
-            if (this.xVel > NEUTRAL_MAX_VEL) this.xVel -= 0.1;
-            if (this.yVel > NEUTRAL_MAX_VEL) this.yVel -= 0.1;
-            if (this.xVel < -NEUTRAL_MAX_VEL) this.xVel += 0.1;
-            if (this.yVel < -NEUTRAL_MAX_VEL) this.yVel += 0.1;
-        }
-        */
     }
 }
 
