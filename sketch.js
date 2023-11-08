@@ -35,8 +35,23 @@ class Square {
     bounceOnEdge() {
         let DEMILITARIZED_ZONE = AVOIDANCE_DIST + 50; //the amount offscreen that squares may go before being confined
 
-        if (this.x < -DEMILITARIZED_ZONE || this.x > width + DEMILITARIZED_ZONE) this.xVel = -this.xVel;
-        if (this.y < -DEMILITARIZED_ZONE || this.y > height + DEMILITARIZED_ZONE) this.yVel = -this.yVel;
+        //if out of bounds, teleport to bound and correct sign of velocity
+        if (this.x < -DEMILITARIZED_ZONE) {
+            this.x = -DEMILITARIZED_ZONE;
+            this.xVel = Math.abs(this.xVel);
+        }
+        if (this.x > width + DEMILITARIZED_ZONE) {
+            this.x = width + DEMILITARIZED_ZONE;
+            this.xVel = -Math.abs(this.xVel);
+        }
+        if (this.y < -DEMILITARIZED_ZONE) {
+            this.y = -DEMILITARIZED_ZONE;
+            this.yVel = Math.abs(this.yVel);
+        }
+        if (this.y > height + DEMILITARIZED_ZONE) {
+            this.y = height + DEMILITARIZED_ZONE;
+            this.yVel = -Math.abs(this.yVel);
+        }
     }
 
     avoidance() {
