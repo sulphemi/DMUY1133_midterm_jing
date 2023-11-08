@@ -94,7 +94,6 @@ draw = () => {
         sq.display();
     }
 
-    cursorSquare.c = AVOIDANCE_DIST > 150 ? color(50, 120, 255, 120) : color(50, 120, 255, map(AVOIDANCE_DIST, 0, 150, 0, 120));
     cursorSquare.x = mouseX;
     cursorSquare.y = mouseY;
     cursorSquare.theta += cursorSquare.omega;
@@ -103,19 +102,29 @@ draw = () => {
 
 //mouse wheel increases/decreases radius of effect
 mouseWheel = event => {
-    AVOIDANCE_DIST += event.delta;
+    changeAvoidDist(event.delta);
 }
 
 //same with up/down keys
 keyPressed = () => {
     switch (key) {
         case "ArrowUp":
-            AVOIDANCE_DIST += 10;
+            changeAvoidDist(10);
             break;
         case "ArrowDown":
-            AVOIDANCE_DIST -= 10;
+            changeAvoidDist(-10);
             break;
         default:
             break;
+    }
+}
+
+changeAvoidDist = factor => {
+    AVOIDANCE_DIST += factor;
+    if (AVOIDANCE_DIST < 0) AVOIDANCE_DIST = 0;
+    if (AVOIDANCE_DIST < 150) {
+        cursorSquare.c = color(50, 120, 255, map(AVOIDANCE_DIST, 0, 150, 0, 120));
+    } else {
+        cursorSquare.c = color(50, 120, 255, 120);
     }
 }
