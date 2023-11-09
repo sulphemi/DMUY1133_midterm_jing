@@ -164,7 +164,7 @@ draw_transitionScene = () => {
     const TRANSITION_FRAME_CT = 400;
 
     //gradually darken background
-    background(map(transitionTickCounter, 0, TRANSITION_FRAME_CT, 255, 0));
+    background(map(transitionTickCounter, 0, TRANSITION_FRAME_CT, 255, 10));
 
     //color of cursorSquare transitions to pure white
     cursorSquare.c = color(
@@ -181,14 +181,25 @@ draw_transitionScene = () => {
     cursorSquare.display();
 
     //we'll also use this time to precalculate the fog filters
-    if (! transitionTickCounter % 2) {
-        let i = transitionTickCounter / 2;
+    if (! (transitionTickCounter % 2)) {
+        let i = transitionTickCounter / 2 + 150;
         fogFilters[i] = createFogLayer(i);
     }
 
     if (transitionTickCounter++ > TRANSITION_FRAME_CT) {
         //move to scene 2
+        draw = draw_scene2;
     }
+}
+
+draw_scene2 = () => {
+    //continue ticking cursor square
+    cursorSquare.x = mouseX;
+    cursorSquare.y = mouseY;
+    cursorSquare.theta += cursorSquare.omega;
+    cursorSquare.display();
+
+    drawFogLayer(fogFilters[frameCount % 200 + 150], mouseX, mouseY);
 }
 
 //prepares a fog layer with radius r viewing window, returning it as a pgraphics
