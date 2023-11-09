@@ -33,7 +33,8 @@ class Square {
     }
 
     bounceOnEdge() {
-        let DEMILITARIZED_ZONE = AVOIDANCE_DIST + 50; //the amount offscreen that squares may go before being confined
+        //the amount offscreen that squares may go before being confined
+        let DEMILITARIZED_ZONE = AVOIDANCE_DIST + 50;
 
         //if out of bounds, teleport to bound and correct sign of velocity
         if (this.x < -DEMILITARIZED_ZONE) {
@@ -73,6 +74,10 @@ class Square {
             if (this.xVel < -NEUTRAL_MAX_VEL) this.xVel += NEUTRAL_DAMPENER;
             if (this.yVel < -NEUTRAL_MAX_VEL) this.yVel += NEUTRAL_DAMPENER;
         }
+    }
+
+    inbounds() {
+        return this.x > 0 && this.x < width && this.y > 0 && this.y < height;
     }
 }
 
@@ -131,7 +136,16 @@ changeAvoidDist = factor => {
         cursorSquare.c = color(50, 120, 255, 120);
     }
 
-    if (AVOIDANCE_DIST > width / 2) {
+    //check if there are still any squares left on screen
+    let squaresStillOnscreen = false;
+    for (const sq of squareList) {
+        if (sq.inbounds()) {
+            squaresStillOnscreen = true;
+            break; //no need to keep looking
+        }
+    }
+
+    if (! squaresStillOnscreen) {
         //switch to transition mode
 
         //disable event listeners
