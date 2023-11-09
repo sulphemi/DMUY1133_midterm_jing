@@ -161,10 +161,13 @@ changeAvoidDist = factor => {
 let transitionTickCounter;
 let fogFilters = {};
 draw_transitionScene = () => {
-    const TRANSITION_FRAME_CT = 400;
+    const TRANSITION_FRAME_CT = 360;
 
     //gradually darken background
-    background(map(transitionTickCounter, 0, TRANSITION_FRAME_CT, 255, 10));
+    background(
+        map(transitionTickCounter, 0, TRANSITION_FRAME_CT, 255, 20), //make it darken
+        map(constrain(transitionTickCounter, 180, 360), 180, 360, 255, 20) //towards the second half, start making it more transparent
+    );
 
     //color of cursorSquare transitions to pure white
     cursorSquare.c = color(
@@ -181,8 +184,8 @@ draw_transitionScene = () => {
     cursorSquare.display();
 
     //we'll also use this time to precalculate the fog filters
-    if (! (transitionTickCounter % 2)) {
-        let i = transitionTickCounter / 2 + 150;
+    if (! (transitionTickCounter % 6)) {
+        let i = transitionTickCounter / 6 + 150;
         fogFilters[i] = createFogLayer(i);
     }
 
@@ -193,19 +196,21 @@ draw_transitionScene = () => {
 }
 
 draw_scene2 = () => {
+    background(30, 20);
+
     //continue ticking cursor square
     cursorSquare.x = mouseX;
     cursorSquare.y = mouseY;
     cursorSquare.theta += cursorSquare.omega;
     cursorSquare.display();
 
-    drawFogLayer(fogFilters[frameCount % 200 + 150], mouseX, mouseY);
+    drawFogLayer(fogFilters[frameCount % 60 + 150], mouseX, mouseY);
 }
 
 //prepares a fog layer with radius r viewing window, returning it as a pgraphics
 function createFogLayer(r) {
     const GRADIENT_STEP = 5;
-    let fog = createGraphics(r * 2, r * 2);
+    let fog = createGraphics(800, 800);
 
     fog.background(0); //set to black
 
@@ -238,4 +243,5 @@ function drawFogLayer(fog, x, y) {
     rect(x - fog.width / 2, 0, x + fog.width / 2, y - fog.height / 2); // top
     rect(x - fog.width / 2, height, x + fog.width / 2, y + fog.height / 2); // bottom
     rect(x + fog.width / 2, 0, width, height); //right
+    rectMode(RADIUS); //back to normal
 }
