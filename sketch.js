@@ -1,11 +1,8 @@
 let fog;
 
-const GRADIENT_STEP = 7;
-
 function setup() {
     createCanvas(800, 800);
-    fog = createGraphics(width, height);
-    prepFogLayer(300);
+    fog = prepFogLayer(300);
 
     noCursor();
     img = loadImage("./witch.jpg");
@@ -20,12 +17,16 @@ function draw() {
     noStroke();
     circle(mouseX, mouseY, 10);
 
-    drawFogLayer(mouseX, mouseY);
+    drawFogLayer(fog, mouseX, mouseY);
 
     console.log(frameRate());
 }
 
+//prepares a fog layer with radius r viewing window, returning it as a pgraphics
 function prepFogLayer(r) {
+    const GRADIENT_STEP = 5;
+    let fog = createGraphics(r * 2, r * 2);
+
     fog.background(0); //set to black
 
     //circular viewing window
@@ -40,9 +41,11 @@ function prepFogLayer(r) {
         fog.stroke(255, 255 - i);
         fog.circle(fog.width / 2, fog.height / 2, r + i);
     }
+
+    return fog;
 }
 
-function drawFogLayer(x, y) {
+function drawFogLayer(fog, x, y) {
     blendMode(MULTIPLY);
     image(fog, x - fog.width / 2, y - fog.height / 2);
     blendMode(BLEND); //reset blend mode
