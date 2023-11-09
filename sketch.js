@@ -100,10 +100,34 @@ draw = () => {
         sq.display();
     }
 
+    //update cursorSquare
     cursorSquare.x = mouseX;
     cursorSquare.y = mouseY;
     cursorSquare.theta += cursorSquare.omega;
     cursorSquare.display();
+
+    //check if there are still any squares left on screen
+    let squaresStillOnscreen = false;
+    for (const sq of squareList) {
+        if (sq.inbounds()) {
+            squaresStillOnscreen = true;
+            break; //no need to keep looking
+        }
+    }
+
+    if (! squaresStillOnscreen) {
+        //switch to transition scene
+
+        //disable event listeners
+        mouseWheel = keyPressed = pass;
+
+        //replace draw function
+        draw = draw_transitionScene;
+        transitionTickCounter = 0;
+
+        //start precalculating fog filters
+        fogPromise = prepareFogFilter;
+    }
 }
 
 //mouse wheel increases/decreases radius of effect
@@ -134,29 +158,6 @@ changeAvoidDist = factor => {
         cursorSquare.c = color(50, 120, 255, map(AVOIDANCE_DIST, 0, 150, 0, 120));
     } else {
         cursorSquare.c = color(50, 120, 255, 120);
-    }
-
-    //check if there are still any squares left on screen
-    let squaresStillOnscreen = false;
-    for (const sq of squareList) {
-        if (sq.inbounds()) {
-            squaresStillOnscreen = true;
-            break; //no need to keep looking
-        }
-    }
-
-    if (! squaresStillOnscreen) {
-        //switch to transition mode
-
-        //disable event listeners
-        mouseWheel = keyPressed = pass;
-
-        //replace draw function
-        draw = draw_transitionScene;
-        transitionTickCounter = 0;
-
-        //start precalculating fog filters
-        fogPromise = prepareFogFilter;
     }
 }
 
