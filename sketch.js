@@ -148,7 +148,26 @@ changeAvoidDist = factor => {
 
 let transitionTickCounter;
 draw_transitionScene = () => {
-    if (transitionTickCounter++ > 180) {
+    const TRANSITION_FRAME_CT = 360;
+
+    //gradually darken background
+    background(map(transitionTickCounter, 0, TRANSITION_FRAME_CT, 255, 0));
+
+    //color of cursorSquare transitions to pure white
+    cursorSquare.c = color(
+        map(transitionTickCounter, 0, TRANSITION_FRAME_CT, 50, 255),
+        map(transitionTickCounter, 0, TRANSITION_FRAME_CT, 120, 255),
+        map(transitionTickCounter, 0, TRANSITION_FRAME_CT, 255, 255), //c'est unnecessaire
+        map(transitionTickCounter, 0, TRANSITION_FRAME_CT, 120, 255)
+    );
+
+    //continue ticking cursor square
+    cursorSquare.x = mouseX;
+    cursorSquare.y = mouseY;
+    cursorSquare.theta += cursorSquare.omega;
+    cursorSquare.display();
+
+    if (transitionTickCounter++ > TRANSITION_FRAME_CT) {
         //move to scene 2
     }
 }
