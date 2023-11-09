@@ -126,7 +126,10 @@ draw = () => {
         transitionTickCounter = 0;
 
         //start precalculating fog filters
-        fogPromise = prepareFogFilter;
+        prepareFogFilter();
+
+        //at this point execution will go to the new draw function
+        console.log("reached here");
     }
 }
 
@@ -184,17 +187,23 @@ draw_transitionScene = () => {
 
     if (transitionTickCounter++ > TRANSITION_FRAME_CT) {
         //move to scene 2
+        while (! fogFilters[350]); //wait for fogFilers[350] to be defined (ie it finished)
     }
 }
 
-let fogPromise;
 let fogFilters;
 async function prepareFogFilter() {
-    fogFilters = [];
+    //create fog layers from radius 150 to 350
+    fogFilters = {};
+    for (let i = 150; i <= 350; i++) {
+        fogFilters[i] = await createFogLayer(i);
+    }
+
+    console.log("meow done!!");
 }
 
 //prepares a fog layer with radius r viewing window, returning it as a pgraphics
-function prepFogLayer(r) {
+async function createFogLayer(r) {
     const GRADIENT_STEP = 5;
     let fog = createGraphics(r * 2, r * 2);
 
