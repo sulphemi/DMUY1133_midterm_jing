@@ -120,6 +120,8 @@ keyPressed = () => {
     }
 }
 
+pass = () => {}
+
 changeAvoidDist = factor => {
     AVOIDANCE_DIST += factor;
     if (AVOIDANCE_DIST < 0) AVOIDANCE_DIST = 0;
@@ -128,4 +130,31 @@ changeAvoidDist = factor => {
     } else {
         cursorSquare.c = color(50, 120, 255, 120);
     }
+
+    if (AVOIDANCE_DIST > width / 2) {
+        //switch to transition mode
+
+        //disable event listeners
+        mouseWheel = keyPressed = pass;
+
+        //replace draw function
+        draw = draw_transitionScene;
+        transitionTickCounter = 0;
+
+        //start precalculating fog filters
+        fogPromise = prepareFogFilter;
+    }
+}
+
+let transitionTickCounter;
+draw_transitionScene = () => {
+    if (transitionTickCounter++ > 180) {
+        //move to scene 2
+    }
+}
+
+let fogPromise;
+let fogFilters;
+async function prepareFogFilter() {
+    fogFilters = [];
 }
