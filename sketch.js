@@ -49,4 +49,12 @@ function drawFogLayer(fog, x, y) {
     blendMode(MULTIPLY);
     image(fog, x - fog.width / 2, y - fog.height / 2);
     blendMode(BLEND); //reset blend mode
+
+    rectMode(CORNERS); //makes it easier zzz
+    //draw rectangles to compensate for uncovered edges
+    fill(0);
+    rect(0, 0, x - fog.width / 2, height); //left
+    rect(x - fog.width / 2, 0, x + fog.width / 2, y - fog.height / 2); // top
+    rect(x - fog.width / 2, height, x + fog.width / 2, y + fog.height / 2); // bottom
+    rect(x + fog.width / 2, 0, width, height); //right
 }
